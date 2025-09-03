@@ -438,7 +438,7 @@ kill PID           # Kill process by ID
 
 ---
 
-## Shortcuts and Wildcards
+## Shortcuts and Tab Completion
 
 ### Tab Completion
 - Press `Tab` to auto-complete filenames and commands
@@ -454,12 +454,18 @@ ctrl+a    # Move to beginning of line
 ctrl+e    # Move to end of line
 ```
 
-### Wildcards
+---
+
+## Wildcards
+
+### Pattern Matching
 ```bash
 *.txt           # All .txt files
 data_*.csv      # Files starting with data_
 file?.txt       # file1.txt, fileA.txt, etc.
 [abc]*.py       # Files starting with a, b, or c
+[0-9]*.log      # Files starting with any digit
+*.[ch]          # Files ending in .c or .h
 ```
 
 ---
