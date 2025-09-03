@@ -63,15 +63,17 @@ style: |
 ### SSH (Secure Shell)
 **From Terminal/Command Line:**
 ```bash
-ssh username@hpc-cluster.institution.edu
-ssh -X username@cluster.edu  # X11 forwarding for GUIs
+ssh username@hpc-cluster.institution.gov
+ssh -A username@cluster.gov      # Agent forwarding
+ssh -AY username@cluster.gov     # Agent + trusted X11 forwarding
 ```
 
-### PuTTY (Windows)
-- Popular SSH client for Windows
-- Configure hostname, port, username
-- Save sessions for convenience
-- Supports key-based authentication
+### PuTTY-CAC (Government Windows)
+- **PuTTY-CAC**: Enhanced PuTTY for government CAC authentication
+- **GitHub**: https://github.com/NoMoreFood/putty-cac
+- **Windows OpenSSH Integration**: Via PuTTY-CAC's Pageant
+- **CAC Support**: Common Access Card authentication
+- **Agent Forwarding**: Built-in support for SSH agent forwarding
 
 ---
 
@@ -80,18 +82,32 @@ ssh -X username@cluster.edu  # X11 forwarding for GUIs
 ### Key-Based Authentication
 ```bash
 # Generate SSH key pair
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+ssh-keygen -t rsa -b 4096 -C "your_email@gov.agency"
 
-# Copy public key to HPC system
-ssh-copy-id username@hpc-cluster.edu
+# Add public key to authorized_keys (shared /home filesystem)
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+# Set proper permissions
+chmod 600 ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+```
+
+### Government SSH Configuration
+```bash
+# Command line options
+ssh -A username@cluster.gov        # Forward SSH agent
+ssh -AY username@cluster.gov       # Agent + trusted X11 forwarding
 ```
 
 ### SSH Config File (`~/.ssh/config`)
 ```
 Host mycluster
-    HostName hpc-cluster.institution.edu
+    HostName hpc-cluster.institution.gov
     User myusername
     IdentityFile ~/.ssh/id_rsa
+    ForwardAgent yes              # Enable agent forwarding
+    ForwardX11 yes               # Enable X11 forwarding
+    ForwardX11Trusted yes        # Trusted X11 forwarding
 ```
 
 ---
