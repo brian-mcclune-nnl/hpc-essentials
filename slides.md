@@ -297,7 +297,7 @@ uniq file.txt        # Remove duplicates
 ## Redirection and Pipes - CSH
 
 ### CSH Redirection (Default Shell)
-```csh
+```bash
 command > file.txt       # Redirect stdout to file
 command >> file.txt      # Append stdout to file
 command >& error.log     # Redirect both stdout and stderr
@@ -306,7 +306,7 @@ command < input.txt      # Read from file
 ```
 
 ### CSH Pipes
-```csh
+```bash
 cat file.txt | grep pattern | sort | uniq
 ls -la | grep "\.py$" | wc -l
 ps aux | grep python | head -5
@@ -357,7 +357,7 @@ echo $SHELL       # Current shell
 ## Environment Variables - CSH
 
 ### Setting Variables (CSH Default)
-```csh
+```bash
 setenv MYVAR "hello world"          # Set environment variable
 setenv PATH ${PATH}:/new/path       # Modify PATH
 
@@ -366,7 +366,7 @@ set localvar = "local only"         # Not exported to children
 ```
 
 ### Unsetting Variables
-```csh
+```bash
 unsetenv MYVAR                      # Remove environment variable
 unset localvar                      # Remove regular variable
 ```
@@ -398,7 +398,7 @@ unset MYVAR                         # Remove variable (env or regular)
 ## Using Environment Variables in Scripts
 
 ### CSH Script Example
-```csh
+```bash
 #!/bin/csh
 setenv DATA_DIR "/scratch/$USER/data"
 setenv OUTPUT_DIR "$DATA_DIR/results"
