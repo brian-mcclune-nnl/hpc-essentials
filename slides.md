@@ -337,6 +337,12 @@ ps aux | grep python | head -5
 
 ## Environment Variables
 
+### What Makes Them Special?
+Unlike regular programming variables:
+- **Inherited by child processes** (programs you run)
+- **Available system-wide** within your session
+- **Used by system and applications** for configuration
+
 ### Common Environment Variables
 ```bash
 echo $HOME        # Home directory
@@ -346,17 +352,64 @@ echo $PWD         # Current directory
 echo $SHELL       # Current shell
 ```
 
-### Setting Variables
-```bash
-export MYVAR="hello world"
-export PATH=$PATH:/new/path
+---
+
+## Environment Variables - CSH
+
+### Setting Variables (CSH Default)
+```csh
+setenv MYVAR "hello world"          # Set environment variable
+setenv PATH ${PATH}:/new/path       # Modify PATH
+
+# Regular variables (not inherited)
+set localvar = "local only"         # Not exported to children
 ```
 
-### In Scripts
+### Unsetting Variables
+```csh
+unsetenv MYVAR                      # Remove environment variable
+unset localvar                      # Remove regular variable
+```
+
+---
+
+## Environment Variables - BASH
+
+### Setting Variables (BASH)
+```bash
+export MYVAR="hello world"          # Set environment variable
+export PATH=$PATH:/new/path         # Modify PATH
+
+# Two-step approach
+MYVAR="hello world"                 # Regular variable first
+export MYVAR                        # Then export it
+
+# Regular variables (not inherited)
+localvar="local only"               # Not exported to children
+```
+
+### Unsetting Variables
+```bash
+unset MYVAR                         # Remove variable (env or regular)
+```
+
+---
+
+## Using Environment Variables in Scripts
+
+### CSH Script Example
+```csh
+#!/bin/csh
+setenv DATA_DIR "/scratch/$USER/data"
+setenv OUTPUT_DIR "$DATA_DIR/results"
+echo "Processing data in $DATA_DIR"
+```
+
+### BASH Script Example
 ```bash
 #!/bin/bash
-DATA_DIR="/scratch/username/data"
-OUTPUT_DIR="$DATA_DIR/results"
+export DATA_DIR="/scratch/$USER/data"
+export OUTPUT_DIR="$DATA_DIR/results"
 echo "Processing data in $DATA_DIR"
 ```
 
