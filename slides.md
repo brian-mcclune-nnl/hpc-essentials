@@ -294,18 +294,39 @@ uniq file.txt        # Remove duplicates
 
 ---
 
-## Redirection and Pipes
+## Redirection and Pipes - CSH
 
-### Redirection
+### CSH Redirection (Default Shell)
+```csh
+command > file.txt       # Redirect stdout to file
+command >> file.txt      # Append stdout to file
+command >& error.log     # Redirect both stdout and stderr
+command >>& all.log      # Append both stdout and stderr
+command < input.txt      # Read from file
+```
+
+### CSH Pipes
+```csh
+cat file.txt | grep pattern | sort | uniq
+ls -la | grep "\.py$" | wc -l
+ps aux | grep python | head -5
+```
+
+---
+
+## Redirection and Pipes - BASH
+
+### BASH Redirection
 ```bash
 command > file.txt       # Redirect stdout to file
 command >> file.txt      # Append stdout to file
 command 2> error.log     # Redirect stderr
 command &> all.log       # Redirect both stdout and stderr
+command 2>&1             # Redirect stderr to stdout
 command < input.txt      # Read from file
 ```
 
-### Pipes
+### BASH Pipes (Same as CSH)
 ```bash
 cat file.txt | grep pattern | sort | uniq
 ls -la | grep "\.py$" | wc -l
