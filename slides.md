@@ -247,9 +247,7 @@ data/results.csv       # Relative to current directory
 
 - **First character**: File type (`-` file, `d` directory, `l` link)
 - **Next 9 characters**: Permissions (owner, group, others)
-  - `r`: read (4)
-  - `w`: write (2) 
-  - `x`: execute (1)
+  - `r`: read (4), `w`: write (2), `x`: execute (1)
 
 ### Changing Permissions
 ```bash
