@@ -150,7 +150,7 @@ ssh mycluster    # Much simpler!
 ### Common Shell Flavors
 - **bash**: Bourne Again Shell (most common)
 - **zsh**: Z Shell (enhanced bash)
-- **csh/tcsh**: C Shell family
+- **csh/tcsh**: C Shell family (**default on our HPC systems**)
 - **fish**: Friendly Interactive Shell
 
 ---
