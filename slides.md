@@ -72,7 +72,6 @@ ssh -AY username@cluster.gov     # Agent + trusted X11 forwarding
 - **PuTTY-CAC**: Enhanced PuTTY for government CAC authentication
 - **GitHub**: https://github.com/NoMoreFood/putty-cac
 - **Windows OpenSSH Integration**: Via PuTTY-CAC's Pageant
-- **CAC Support**: Common Access Card authentication
 - **Agent Forwarding**: Built-in support for SSH agent forwarding
 
 ---
@@ -92,14 +91,31 @@ chmod 600 ~/.ssh/authorized_keys
 chmod 700 ~/.ssh
 ```
 
-### Government SSH Configuration
+---
+
+## Government SSH Configuration
+
+### Command Line Options
 ```bash
-# Command line options
-ssh -A username@cluster.gov        # Forward SSH agent
-ssh -AY username@cluster.gov       # Agent + trusted X11 forwarding
+# Basic connection
+ssh username@cluster.gov
+
+# With agent forwarding
+ssh -A username@cluster.gov
+
+# Agent + trusted X11 forwarding
+ssh -AY username@cluster.gov
 ```
 
-### SSH Config File (`~/.ssh/config`)
+### Why Use These Options?
+- **`-A`**: Forward SSH agent (access other nodes without re-auth)
+- **`-Y`**: Trusted X11 forwarding (run GUI applications)
+
+---
+
+## SSH Config File
+
+### Create `~/.ssh/config` for convenience:
 ```
 Host mycluster
     HostName hpc-cluster.institution.gov
@@ -108,6 +124,12 @@ Host mycluster
     ForwardAgent yes              # Enable agent forwarding
     ForwardX11 yes               # Enable X11 forwarding
     ForwardX11Trusted yes        # Trusted X11 forwarding
+```
+
+### Usage
+```bash
+# Instead of: ssh -AY myusername@hpc-cluster.institution.gov
+ssh mycluster    # Much simpler!
 ```
 
 ---
