@@ -637,19 +637,15 @@ data = [1, 2, 3, 4, 5]
 files = ["input1.txt", "input2.txt", "input3.txt"]
 
 # Dictionaries
-config = {
-    "nodes": 4,
-    "cores_per_node": 24,
-    "memory": "64GB"
-}
+config = {"nodes": 4, "cores_per_node": 24, "memory": "64GB"}
 ```
 
 ---
 
-## Control Flow
+## Python Conditionals
 
-### Conditionals
 ```python
+# If/elif/else statements
 if cores > 16:
     print("High-performance node")
 elif cores > 8:
@@ -657,21 +653,33 @@ elif cores > 8:
 else:
     print("Standard node")
 
-# Memory check
+# Conditional expressions (ternary operator)
 memory_gb = 128
 partition = "bigmem" if memory_gb > 64 else "compute"
+
+# Boolean conditions
+is_ready = data_loaded and model_trained
+should_continue = not error_occurred and iterations < max_iter
 ```
 
-### Loops
+---
+
+## Python Loops
+
+### For Loops
 ```python
-# For loops
+# Range-based loops
 for i in range(10):
     print(f"Processing iteration {i}")
 
+# Iterating over lists
 for filename in ["data1.csv", "data2.csv", "data3.csv"]:
     process_file(filename)
+```
 
-# While loops
+### While Loops
+```python
+# Condition-based loops
 count = 0
 while count < max_iterations and not converged:
     result = run_simulation()
@@ -680,9 +688,9 @@ while count < max_iterations and not converged:
 
 ---
 
-## Functions
+## Python Functions - Basic
 
-### Basic Functions
+### Function Definition and Usage
 ```python
 def process_data(input_file, output_file):
     """Process data from input file and save to output file."""
@@ -691,23 +699,59 @@ def process_data(input_file, output_file):
     save_results(processed, output_file)
     return processed
 
+# Function with default parameters
 def calculate_memory_needed(data_size_gb, overhead_factor=1.5):
     """Calculate memory requirements with overhead."""
     return int(data_size_gb * overhead_factor)
 
-# Usage
-memory_req = calculate_memory_needed(32)  # 48 GB
+# Usage examples
+result = process_data("input.csv", "output.csv")
+memory_req = calculate_memory_needed(32)  # Uses default overhead
+memory_req = calculate_memory_needed(32, 2.0)  # Custom overhead
 ```
 
-### Advanced Function Features
+---
+
+## Python Functions - Advanced
+
+### Variable Arguments and Keyword Arguments
 ```python
 def parallel_process(*files, workers=4, **kwargs):
-    """Process multiple files in parallel."""
+    """Process multiple files in parallel.
+    
+    *files: Variable number of file arguments
+    **kwargs: Additional keyword arguments passed to jobs
+    """
     for file in files:
         submit_job(file, workers=workers, **kwargs)
 
+# Usage with variable arguments
+parallel_process("data1.csv", "data2.csv", "data3.csv", 
+                workers=8, memory="16GB", time="02:00:00")
+```
+
+---
+
+## Python Lambda Functions
+
+### Anonymous Functions
+```python
+# Lambda functions are short, inline functions
+square = lambda x: x * x
+add = lambda x, y: x + y
+
 # Usage
-parallel_process("data1.csv", "data2.csv", workers=8, memory="16GB")
+result = square(5)  # Returns 25
+sum_val = add(3, 4)  # Returns 7
+```
+
+### Practical HPC Examples
+```python
+# Sort files by size
+files.sort(key=lambda f: os.path.getsize(f))
+
+# Filter completed jobs
+completed = filter(lambda job: job.status == "COMPLETED", jobs)
 ```
 
 ---
