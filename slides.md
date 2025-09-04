@@ -294,6 +294,69 @@ uniq file.txt        # Remove duplicates
 
 ---
 
+## File Comparison
+
+### Comparing Files
+```bash
+diff file1.txt file2.txt           # Show differences between files
+diff -u file1.txt file2.txt        # Unified diff format
+diff -r dir1/ dir2/                # Compare directories recursively
+```
+
+### HPC Use Cases
+```bash
+# Compare configuration files
+diff config.old config.new
+
+# Check job script changes  
+diff -u job_v1.slurm job_v2.slurm
+
+# Verify backup integrity
+diff -r /home/user/data /backup/data
+```
+
+---
+
+## Archive & Compression
+
+### Creating Archives
+```bash
+tar -cf archive.tar files/         # Create tar archive
+tar -czf archive.tar.gz files/     # Create compressed tar (gzip)
+tar -cjf archive.tar.bz2 files/    # Create compressed tar (bzip2)
+zip -r archive.zip files/          # Create zip archive
+```
+
+### Extracting Archives
+```bash
+tar -xf archive.tar                # Extract tar archive
+tar -xzf archive.tar.gz            # Extract gzipped tar
+tar -xjf archive.tar.bz2           # Extract bzip2 tar
+unzip archive.zip                  # Extract zip archive
+```
+
+---
+
+## Archive & Compression - HPC Workflows
+
+### Practical Examples
+```bash
+# Archive results for transfer and list contents
+tar -czf results_$(date +%Y%m%d).tar.gz output/
+tar -tzf results_$(date +%Y%m%d).tar.gz    # List files in archive
+
+# Compress large datasets
+gzip large_dataset.csv             # Creates large_dataset.csv.gz
+gunzip large_dataset.csv.gz        # Uncompress
+```
+
+### Best Practices
+- **Use compression** for large files and transfers
+- **Include timestamps** in archive names
+- **Test extraction** before deleting originals
+
+---
+
 ## Redirection and Pipes - CSH
 
 ### CSH Redirection (Default Shell)
