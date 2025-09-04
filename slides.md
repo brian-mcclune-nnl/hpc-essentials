@@ -415,6 +415,81 @@ echo "Processing data in $DATA_DIR"
 
 ---
 
+## Environment Modules (Lmod)
+
+### What are Environment Modules?
+- **Software management system** for HPC environments
+- **Dynamically modify environment** (PATH, LD_LIBRARY_PATH, etc.)
+- **Multiple versions** of software can coexist
+- **Clean environment** - load only what you need
+
+### Why Use Modules?
+- **Avoid conflicts** between different software versions
+- **Reproducible environments** for research
+- **Easy switching** between software stacks
+- **Optimized builds** for HPC hardware
+
+---
+
+## Module Commands
+
+### Discovering Available Software
+```bash
+module avail                    # Show all available modules
+module avail python            # Show Python modules
+module avail 2>&1 | grep -i gcc  # Search for GCC modules
+```
+
+### Managing Loaded Modules
+```bash
+module list                    # Show currently loaded modules
+module load python/3.9        # Load specific Python version
+module load gcc/11.2.0         # Load GCC compiler
+module unload python           # Unload Python module
+module purge                   # Unload all modules
+```
+
+---
+
+## Module Commands (continued)
+
+### Getting Information
+```bash
+module show python/3.9         # Show module details
+module help python/3.9         # Show module help
+module whatis python/3.9       # Brief description
+```
+
+### Practical Tips
+- **Load order matters** - some modules depend on others
+- **Check conflicts** - some modules cannot be loaded together
+- **Use specific versions** for reproducibility
+- **Start fresh** with `module purge` when troubleshooting
+
+---
+
+## Module Workflow Example
+
+### Typical Module Loading Sequence
+```bash
+# Start with clean environment
+module purge                   # Remove all loaded modules
+
+# Load dependencies first
+module load gcc/11.2.0         # Load compiler first
+module load openmpi/4.1.0      # Load MPI library
+module load python/3.9         # Then load Python
+
+# Verify what's loaded
+module list                    # Check loaded modules
+
+# Load additional tools as needed
+module load git/2.35.0         # Version control
+module load cmake/3.22.0       # Build system
+```
+
+---
+
 ## Process Management
 
 ### Viewing Processes
