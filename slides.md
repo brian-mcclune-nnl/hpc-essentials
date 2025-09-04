@@ -1179,11 +1179,10 @@ scontrol show partition  # Partition details
 - **Partition**: Different queues have different priorities
 
 ### Common Partitions
-- `debug`: Short jobs, quick turnaround
-- `compute`: General purpose computing
-- `gpu`: GPU-enabled nodes
-- `bigmem`: High-memory nodes
-- `long`: Extended runtime jobs
+- `short`: Short jobs, quick turnaround
+- `production`: General purpose computing
+- `accel`: GPU-enabled nodes
+- `whole_node`: Whole node jobs
 
 ---
 
@@ -1263,13 +1262,25 @@ tar -czf results_$(date +%Y%m%d).tar.gz *.csv
 - User forums and communities
 - Office hours or training sessions
 
-### Useful Commands for Troubleshooting
+---
+
+## Troubleshooting Commands
+
+### SLURM Job Debugging
 ```bash
 scontrol show job JOBID    # Detailed job information
 sacct -j JOBID             # Job accounting information  
 seff JOBID                 # Job efficiency report
+squeue -u $USER            # Check your running jobs
+scancel JOBID              # Cancel problematic job
+```
+
+### System Information
+```bash
 module avail               # Available software modules
+module list                # Currently loaded modules
 quota -u $USER             # Check disk usage limits
+df -h /scratch/$USER       # Check scratch space usage
 ```
 
 ---
@@ -1287,12 +1298,6 @@ quota -u $USER             # Check disk usage limits
 - **Performance profiling** and optimization
 - **Custom software** compilation and installation
 - **Advanced scheduling** and resource allocation
-
-### Continue Learning
-- Attend HPC workshops and training
-- Join user communities
-- Practice with real projects
-- Experiment with new tools and techniques
 
 ---
 
