@@ -470,7 +470,7 @@ file?.txt       # file1.txt, fileA.txt, etc.
 
 ---
 
-## Text Editors
+## Text Editors - Vi/Vim
 
 ### Vi/Vim Basics
 ```bash
@@ -485,12 +485,20 @@ vim filename       # Open file in vim (enhanced vi)
 - `:q`: Quit
 - `:wq`: Save and quit
 - `:q!`: Quit without saving
-- `/pattern`: Search
-- `dd`: Delete line
 
-### Alternative Editors
-- `nano`: User-friendly editor
-- `emacs`: Powerful editor with many features
+---
+
+## Text Editors - Alternatives
+
+### User-Friendly Options
+- **nano**: Simple, intuitive editor with on-screen help
+- **emacs**: Powerful editor with extensive features
+- **gedit**: GUI text editor (if X11 forwarding enabled)
+
+### Why Use Alternatives?
+- **nano**: Great for beginners, shows key commands at bottom
+- **emacs**: Advanced features, extensible
+- **GUI editors**: Familiar interface for those new to command line
 
 ---
 
@@ -516,25 +524,92 @@ EOF
 
 ---
 
-## Regular Expressions
+## Regular Expressions - Introduction
 
-### Basic Patterns
+### What are Regular Expressions?
+- **Pattern matching language** for searching text
+- **Powerful tool** for finding, filtering, and extracting data
+- **Widely used** in text processing, log analysis, data cleaning
+- **Essential skill** for HPC data management
+
+### Common Use Cases
+- **Log file analysis**: Find error patterns
+- **Data validation**: Check file formats
+- **File filtering**: Select files by naming patterns
+- **Text extraction**: Pull specific information from output
+
+---
+
+## Regular Expressions - Basic Patterns
+
+### Literal and Position Matching
 ```bash
-grep "pattern" file.txt           # Literal match
-grep "^start" file.txt           # Lines starting with "start"
-grep "end$" file.txt             # Lines ending with "end"
-grep "t.st" file.txt             # . matches any character
-grep "colou?r" file.txt          # ? makes preceding char optional
+grep "error" logfile.txt         # Literal match
+grep "^ERROR" logfile.txt        # Lines starting with "ERROR"
+grep "completed$" logfile.txt    # Lines ending with "completed"
+```
+
+### Character Classes and Ranges
+```bash
+grep "t.st" file.txt             # . matches any single character
+grep "test[123]" file.txt        # Character class [123]
+grep "test[0-9]" file.txt        # Character range [0-9]
+```
+
+### Quantifiers
+```bash
 grep "colou*r" file.txt          # * matches zero or more
-grep "test[123]" file.txt        # Character class
+grep "colou.*r" file.txt         # .* matches any characters
 ```
 
-### Extended Regex (with -E)
+---
+
+## Regular Expressions - Extended Patterns
+
+### Extended Regex (Requires -E)
 ```bash
-grep -E "test|exam" file.txt     # OR operator
+grep -E "test|exam" file.txt     # OR operator |
 grep -E "test+" file.txt         # + matches one or more
-grep -E "(test){2}" file.txt     # Grouping and repetition
+grep -E "test?" file.txt         # ? makes preceding char optional
+grep -E "test{2}" file.txt       # {2} matches exactly 2
+grep -E "test{2,5}" file.txt     # {2,5} matches 2 to 5
 ```
+
+### Advanced Quantifiers
+```bash
+grep -E "(error|warning):" log.txt   # Alternation with grouping
+grep -E "file[0-9]+\.txt" file.txt   # One or more digits
+grep -E "[a-zA-Z]+@[a-zA-Z]+" file.txt # Email-like patterns
+```
+
+---
+
+## Regular Expressions - Grouping and Capture
+
+### Using Parentheses for Grouping
+```bash
+grep -E "(test|exam)ing" file.txt    # Grouping with alternation
+grep -E "file(1|2|3).txt" file.txt   # Multiple options
+grep -E "([0-9]+)" file.txt          # Group numbers
+grep -E "([a-zA-Z]+)\.txt" file.txt  # Group filenames
+```
+
+### Practical Examples with Capture Groups
+```bash
+# Extract job IDs from SLURM output
+grep -E "Job ([0-9]+)" slurm.out
+
+# Find email patterns
+grep -E "([a-zA-Z0-9]+)@([a-zA-Z0-9]+)" file.txt
+
+# Match IP addresses
+grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" log.txt
+```
+
+### Note on Capture Groups
+- **Grouping**: Parentheses group patterns for operators
+- **Extraction**: Some tools can extract grouped content
+- **grep**: Shows matches but doesn't extract groups separately
 
 ---
 
