@@ -688,9 +688,98 @@ grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" log.txt
 
 ---
 
-<!-- _class: lead -->
+## Text Processing with sed
 
-# 4. Python on HPC
+### What is sed?
+- **Stream Editor** for filtering and transforming text
+- **Non-interactive** - works in pipelines and scripts
+- **Pattern-based** editing with regular expressions
+- **Essential tool** for HPC log processing and data cleaning
+
+---
+
+## Basic sed Operations
+
+### Text Substitution
+```bash
+# Substitute (replace) text
+sed 's/old/new/' file.txt          # Replace first occurrence per line
+sed 's/old/new/g' file.txt         # Replace all occurrences
+sed 's/ERROR/WARNING/g' log.txt     # Change log levels
+```
+
+### Deleting Lines
+```bash
+# Delete lines
+sed '/pattern/d' file.txt           # Delete lines containing pattern
+sed '1,5d' file.txt                 # Delete lines 1-5
+sed '/^$/d' file.txt                # Delete empty lines
+```
+
+---
+
+## Advanced sed Examples
+
+### HPC-Specific sed Usage
+```bash
+# Extract job information from SLURM logs
+sed -n '/Job [0-9]/p' slurm.out     # Print lines with job numbers
+sed 's/.*Job \([0-9]*\).*/\1/' log.txt  # Extract job IDs
+
+# Clean up data files
+sed 's/,/ /g' data.csv              # Replace commas with spaces
+sed 's/^[ \t]*//' file.txt          # Remove leading whitespace
+sed '/^#/d' config.txt              # Remove comment lines
+
+# Modify configuration files
+sed 's/nodes=4/nodes=8/' job.sh     # Update node count
+sed -i 's/old/new/g' file.txt       # Edit file in-place
+```
+
+---
+
+## Text Processing with awk
+
+### What is awk?
+- **Pattern-scanning and processing language**
+- **Field-oriented** - automatically splits lines into fields
+- **Built-in variables** like NF (number of fields), NR (record number)
+- **Powerful for** data extraction and reporting
+
+### Basic awk Structure
+```bash
+# Basic syntax: awk 'pattern { action }' file
+awk '{ print }' file.txt            # Print all lines (like cat)
+awk '{ print $1 }' file.txt         # Print first field
+awk '{ print $1, $3 }' file.txt     # Print first and third fields
+awk '{ print NF }' file.txt         # Print number of fields per line
+awk '{ print NR, $0 }' file.txt     # Print line numbers
+```
+
+---
+
+## Advanced awk Examples
+
+### HPC Data Processing
+```bash
+# Process SLURM output
+awk '/COMPLETED/ { print $1, $6 }' squeue.out  # Job ID and state
+awk '$3 > 1000 { print $1 }' memory.log        # Jobs using >1000MB
+
+# Calculate statistics
+awk '{ sum += $2 } END { print sum }' data.txt # Sum second column
+awk '{ sum += $1; count++ } END { print sum/count }' # Average
+awk 'BEGIN { max = 0 } { if ($1 > max) max = $1 } END { print max }'
+
+# Format output
+awk '{ printf "%-10s %8.2f\n", $1, $2 }' data.txt  # Formatted columns
+awk -F: '{ print $1, $3 }' /etc/passwd              # Custom field separator
+```
+
+### Practical Tips
+- **Use -F** to specify field separators (`:`, `,`, etc.)
+- **Combine with pipes** for complex processing
+- **Variables persist** throughout processing
 
 ---
 
@@ -840,20 +929,92 @@ module load python/3.9
 module load python/3.9-conda  # Or conda-based Python
 ```
 
-### Virtual Environments
+### Why Use Environment Management?
+- **Isolated dependencies** for different projects
+- **Reproducible environments** across systems
+- **Avoid version conflicts** between packages
+- **Clean project organization**
+
+---
+
+## Python Virtual Environments
+
+### Creating and Using venv
 ```bash
 # Create virtual environment
 python -m venv myproject_env
 
-# Activate
+# Activate environment
 source myproject_env/bin/activate
 
 # Install packages
-pip install numpy pandas scikit-learn
+pip install numpy pandas scikit-learn matplotlib
 
-# Deactivate
+# Save environment
+pip freeze > requirements.txt
+
+# Deactivate when done
 deactivate
 ```
+
+---
+
+## Conda Environments
+
+### Creating and Using Conda
+```bash
+# Load conda module
+module load python/3.9-conda
+
+# Create conda environment
+conda create -n myproject python=3.9
+
+# Activate environment
+conda activate myproject
+
+# Install packages (conda or pip)
+conda install numpy pandas matplotlib
+conda install -c conda-forge scikit-learn
+pip install custom-package
+```
+
+---
+
+## Managing Conda Environments
+
+### Environment Management Commands
+```bash
+# List environments
+conda env list
+
+# Export environment
+conda env export > environment.yml
+
+# Create from file
+conda env create -f environment.yml
+
+# Remove environment
+conda env remove -n myproject
+
+# Deactivate
+conda deactivate
+```
+
+---
+
+## Conda vs Pip
+
+### Key Differences
+- **conda**: Binary packages, faster installs, dependency resolution
+- **pip**: More packages available, source installs from PyPI
+- **conda**: Can install non-Python dependencies (C libraries, etc.)
+- **pip**: Python-only package manager
+
+### Best Practices for HPC
+- **Start with conda** for scientific packages (numpy, scipy, pandas)
+- **Use pip** for packages not available in conda
+- **Install conda packages first**, then pip packages
+- **Avoid mixing** conda and pip for the same package
 
 ---
 
@@ -874,12 +1035,9 @@ import multiprocessing as mp
 import concurrent.futures
 from joblib import Parallel, delayed
 
-# Multiprocessing example
-def process_chunk(data_chunk):
-    return analyze(data_chunk)
-
+# Multiprocessing example with lambda
 with mp.Pool(processes=8) as pool:
-    results = pool.map(process_chunk, data_chunks)
+    results = pool.map(lambda chunk: analyze(chunk), data_chunks)
 ```
 
 ---
