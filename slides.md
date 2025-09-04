@@ -839,11 +839,6 @@ awk '{ printf "%-10s %8.2f\n", $1, $2 }' data.txt  # Formatted columns
 awk -F: '{ print $1, $3 }' /etc/passwd              # Custom field separator
 ```
 
-### Practical Tips
-- **Use -F** to specify field separators (`:`, `,`, etc.)
-- **Combine with pipes** for complex processing
-- **Variables persist** throughout processing
-
 ---
 
 ## Python Basics Review
