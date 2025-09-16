@@ -91,6 +91,9 @@ Host *
 ```bash
 # Instead of: ssh -AY mcclubp@b24
 ssh b24       # Much simpler!
+
+# Learn more on the man page:
+man ssh_config
 ```
 
 ---
@@ -108,6 +111,32 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 # Set proper permissions
 chmod 600 ~/.ssh/authorized_keys
 chmod 700 ~/.ssh
+```
+
+---
+
+## Back on Track: What about Bitbucket?
+
+- **Configure your keys.** Add one or more of your SSH keys to your account
+- **Include a file-based identity.** Accessing the key associated with your classified badge is not straightforward!
+
+---
+
+## One More Thing: Can I Browse HPC Files from my PC?
+
+### You can! Map network drives:
+1. Open File Explorer
+2. Right click on **This PC** (left sidebar).
+3. Select **Map network drive...* from the right-click menu.
+4. Select a free drive letter to map.
+5. Enter a network drive path.
+
+**Popular options:**
+```bash
+\\kaplhpcss.nrcs.nnpp.gov\home\mcclubp  # /home/mcclubp
+\\betphpcss.nrcs.nnpp.gov\share\user\mcclubp  # /share/user/mcclubp
+\\kaplhpcss.nrcs.nnpp.gov\share\project  # /share/project
+# ^ note the first four letters here when selecting a site!
 ```
 
 ---
