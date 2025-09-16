@@ -1106,7 +1106,258 @@ conda deactivate
 
 <!-- _class: lead -->
 
-# 5. SLURM Job Management
+# 5. Hands-On Exercises
+
+---
+
+## Exercise Overview
+
+**Practical exercises to reinforce your skills:**
+
+1. **Text Processing with sed** - Edit YAML configuration files
+2. **Filtering with grep & wc** - Count test results
+3. **Data Extraction with awk** - Parse SLURM job output
+4. **Command History** - Capture and share your session
+
+---
+
+## Exercise 1: Configuration with sed
+
+**Scenario:** Update Python version in a configuration file
+
+```yaml
+# config.yaml
+environment:
+  python_version: "3.8"
+  modules:
+    - numpy
+    - scipy
+```
+
+**Your task:** Change Python version from 3.8 to 3.11
+
+```bash
+# Create the test file
+echo 'environment:
+  python_version: "3.8"
+  modules:
+    - numpy
+    - scipy' > config.yaml
+
+# Use sed to update the version
+sed -i 's/python_version: "3.8"/python_version: "3.11"/' config.yaml
+```
+
+---
+
+## Exercise 1: Solution
+
+**Verify your changes:**
+
+```bash
+cat config.yaml
+```
+
+**Expected output:**
+```yaml
+environment:
+  python_version: "3.11"
+  modules:
+    - numpy
+    - scipy
+```
+
+**Alternative approaches:**
+```bash
+# More flexible pattern matching
+sed -i 's/python_version: "[0-9.]*"/python_version: "3.11"/' config.yaml
+
+# Using line numbers (if you know line 2 has the version)
+sed -i '2s/"3.8"/"3.11"/' config.yaml
+```
+
+---
+
+## Exercise 2: Filtering Test Results
+
+**Scenario:** Count successful tests in output files
+
+```bash
+# Create sample test output
+echo 'Test 1: PASS
+Test 2: FAIL
+Test 3: PASS
+Test 4: PASS
+Test 5: FAIL' > test_results.txt
+```
+
+**Your tasks:**
+1. Count total tests
+2. Count passing tests
+3. Count failing tests
+
+---
+
+## Exercise 2: Solution
+
+**Count all tests:**
+```bash
+wc -l test_results.txt
+# Output: 5 test_results.txt
+```
+
+**Count passing tests:**
+```bash
+grep -c "PASS" test_results.txt
+# Output: 3
+```
+
+**Count failing tests:**
+```bash
+grep -c "FAIL" test_results.txt
+# Output: 2
+```
+
+**One-liner summary:**
+```bash
+echo "Total: $(wc -l < test_results.txt), Pass: $(grep -c PASS test_results.txt), Fail: $(grep -c FAIL test_results.txt)"
+```
+
+---
+
+## Exercise 3: SLURM Job Parsing with awk
+
+**Scenario:** Extract job information from SLURM output
+
+```bash
+# Create sample SLURM job data
+echo 'JOBID PARTITION NAME USER ST TIME NODES NODELIST
+12345 short test1 user1 R 0:05 1 node001
+12346 production job2 user2 PD 0:00 4 (Priority)
+12347 accel gpu_job user1 R 2:30 1 node010' > slurm_jobs.txt
+```
+
+**Your tasks:**
+1. Extract running jobs only
+2. Get job IDs for a specific user
+3. Calculate total requested nodes
+
+---
+
+## Exercise 3: Solution Part 1
+
+**Extract running jobs (status "R"):**
+```bash
+awk '$5 == "R" { print $1, $3, $6, $7 }' slurm_jobs.txt
+```
+Output:
+```
+12345 test1 1 node001
+12347 gpu_job 1 node010
+```
+
+**Get job IDs for user1:**
+```bash
+awk '$4 == "user1" { print $1 }' slurm_jobs.txt
+```
+Output:
+```
+12345
+12347
+```
+
+---
+
+## Exercise 3: Solution Part 2
+
+**Calculate total requested nodes:**
+```bash
+awk 'NR > 1 { total += $6 } END { print "Total nodes requested:", total }' slurm_jobs.txt
+```
+Output:
+```
+Total nodes requested: 6
+```
+
+**Advanced: Summary by partition:**
+```bash
+awk 'NR > 1 { partition[$2] += $6 } END { 
+  for (p in partition) 
+    print p":", partition[p], "nodes" 
+}' slurm_jobs.txt
+```
+
+---
+
+## Exercise 4: Command History
+
+**Scenario:** Capture your terminal session for documentation
+
+**Your tasks:**
+1. Save your command history
+2. Filter for specific commands
+3. Create a session summary
+
+**Commands to try:**
+```bash
+# Save recent history
+history 20 > my_session.txt
+
+# Filter for specific commands (e.g., grep commands)
+history | grep "grep" > grep_commands.txt
+
+# Show commands from this session only
+history | tail -20
+```
+
+---
+
+## Exercise 4: Advanced History
+
+**Create a timestamped session log:**
+
+```bash
+# Enable timestamp in history (add to ~/.bashrc)
+export HISTTIMEFORMAT="%Y-%m-%d %T "
+
+# Save session with timestamps
+history > session_$(date +%Y%m%d_%H%M).log
+```
+
+**Filter and analyze your session:**
+```bash
+# Most used commands
+history | awk '{print $4}' | sort | uniq -c | sort -nr | head -10
+
+# Commands from last hour
+history | grep "$(date +%Y-%m-%d\ %H):"
+```
+
+---
+
+## Exercise Wrap-Up
+
+**What you've learned:**
+- **sed**: Stream editing for configuration changes
+- **grep + wc**: Filtering and counting data
+- **awk**: Pattern matching and field extraction
+- **history**: Session documentation and analysis
+
+**Next steps:**
+- Combine these tools in scripts
+- Apply to your real data processing workflows
+- Use pipes to chain operations together
+
+**Example combined workflow:**
+```bash
+history | grep "python" | awk '{print $5}' | sort | uniq -c | sort -nr
+```
+
+---
+
+<!-- _class: lead -->
+
+# 6. SLURM Job Management
 
 ---
 
@@ -1208,7 +1459,7 @@ scontrol show partition  # Partition details
 
 <!-- _class: lead -->
 
-# 6. Best Practices & Next Steps
+# 7. Best Practices & Next Steps
 
 ---
 
