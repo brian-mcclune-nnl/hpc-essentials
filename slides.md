@@ -1007,11 +1007,12 @@ completed = filter(lambda job: job.status == "COMPLETED", jobs)
 
 ## Python on HPC: Best Practices
 
-### Module Loading
+### Module Loading and Environment Activating
 ```bash
 # In SLURM script or interactive session
 module load python/3.10
-module load python/3.10-conda  # Or conda-based Python
+module load anaconda3
+# NOTE: may need to initialize conda separately
 ```
 
 ### Why Use Environment Management?
@@ -1227,7 +1228,33 @@ scontrol show partition  # Partition details
 
 ---
 
-## Workflow Example
+## Workflow Example (1/2)
+`process_array.slurm`:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=data-processing-array
+#SBATCH --output=logs/output_%A_%a.txt
+#SBATCH --error=logs/error_%A_%a.txt
+#SBATCH --time=01:00:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=8G
+
+# SLURM_ARRAY_TASK_ID contains the current array index (1-100)
+echo "Processing task ${SLURM_ARRAY_TASK_ID}"
+
+# Example: Process different input files
+INPUT_FILE="/share/project/foo/${USER}/data/input_${SLURM_ARRAY_TASK_ID}.csv"
+OUTPUT_FILE="/share/project/foo/${USER}/results/result_${SLURM_ARRAY_TASK_ID}.csv"
+
+# Run the processing script with array-specific parameters
+python process_data.py --input "$INPUT_FILE" --output "$OUTPUT_FILE" --task-id "$SLURM_ARRAY_TASK_ID"
+```
+
+---
+
+## Workflow Example (2/2)
 
 ```bash
 # 1. Prepare environment
@@ -1235,7 +1262,7 @@ module load python/3.10
 source my_project_env/bin/activate
 
 # 2. Organize data
-mkdir -p /scratch/$USER/project/{data,results,logs}
+mkdir -p /share/project/foo/$USER/{data,results,logs}
 
 # 3. Submit job
 sbatch --array=1-100 process_array.slurm
@@ -1244,7 +1271,7 @@ sbatch --array=1-100 process_array.slurm
 watch squeue -u $USER
 
 # 5. Collect results
-cd /scratch/$USER/project/results
+cd /share/project/foo/$USER/results
 tar -czf results_$(date +%Y%m%d).tar.gz *.csv
 ```
 
