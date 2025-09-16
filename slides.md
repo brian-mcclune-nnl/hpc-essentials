@@ -52,36 +52,55 @@ style: |
 
 ---
 
-<!-- _class: lead -->
-
-# 2. Connecting to HPC Systems
-
----
-
-## Connection Methods
+## Cool! How do I Connect?
 
 ### SSH (Secure Shell)
 **From Terminal/Command Line:**
 ```bash
-ssh username@hpc-cluster.institution.gov
-ssh -A username@cluster.gov      # Agent forwarding
-ssh -AY username@cluster.gov     # Agent + trusted X11 forwarding
+ssh k22 
+ssh -A b21      # Agent forwarding
+ssh -AY b23     # Agent + trusted X11 forwarding
 ```
 
 ### PuTTY-CAC (Government Windows)
-- **PuTTY-CAC**: Enhanced PuTTY for government CAC authentication
+- **From PuTTY-CAC**: Enhanced PuTTY for government CAC authentication
 - **GitHub**: https://github.com/NoMoreFood/putty-cac
 - **Windows OpenSSH Integration**: Via PuTTY-CAC's Pageant
 - **Agent Forwarding**: Built-in support for SSH agent forwarding
 
 ---
 
-## SSH Best Practices
+## What if I Don't Have an Account?
 
-### Key-Based Authentication
+- Submit a ServiceNow request
+- Business justification: You need HPC access for your job
+- Prefer not to do that? Talk to your manager!
+---
+
+## Too Much Information? SSH Config Files
+
+### Create `~/.ssh/config` for convenience:
+```
+Host *
+    User mcclubp
+    ForwardAgent yes              # Enable agent forwarding
+    ForwardX11Trusted yes        # Trusted X11 forwarding
+```
+
+### Usage
+```bash
+# Instead of: ssh -AY mcclubp@b24
+ssh b24       # Much simpler!
+```
+
+---
+
+## Definitely Too Much Information: Generating Keys
+
+### Used for connecting to compute nodes
 ```bash
 # Generate SSH key pair
-ssh-keygen -t rsa -b 4096 -C "your_email@gov.agency"
+ssh-keygen -t rsa -b 4096
 
 # Add public key to authorized_keys (shared /home filesystem)
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -89,47 +108,6 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 # Set proper permissions
 chmod 600 ~/.ssh/authorized_keys
 chmod 700 ~/.ssh
-```
-
----
-
-## Government SSH Configuration
-
-### Command Line Options
-```bash
-# Basic connection
-ssh username@cluster.gov
-
-# With agent forwarding
-ssh -A username@cluster.gov
-
-# Agent + trusted X11 forwarding
-ssh -AY username@cluster.gov
-```
-
-### Why Use These Options?
-- **`-A`**: Forward SSH agent (access other nodes without re-auth)
-- **`-Y`**: Trusted X11 forwarding (run GUI applications)
-
----
-
-## SSH Config File
-
-### Create `~/.ssh/config` for convenience:
-```
-Host mycluster
-    HostName hpc-cluster.institution.gov
-    User myusername
-    IdentityFile ~/.ssh/id_rsa
-    ForwardAgent yes              # Enable agent forwarding
-    ForwardX11 yes               # Enable X11 forwarding
-    ForwardX11Trusted yes        # Trusted X11 forwarding
-```
-
-### Usage
-```bash
-# Instead of: ssh -AY myusername@hpc-cluster.institution.gov
-ssh mycluster    # Much simpler!
 ```
 
 ---
