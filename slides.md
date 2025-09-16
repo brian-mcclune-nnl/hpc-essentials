@@ -216,6 +216,10 @@ mv old new      # Move/rename
 rm file.txt     # Remove file
 rm -rf dirname  # Remove directory
 ln -s target link # Symbolic link
+
+# Copy files / directories between hosts
+scp my_file b21:/dest/path
+scp -r my_dir k22:/dest/path
 ```
 
 </div>
