@@ -823,6 +823,7 @@ sed '/^#/d' config.txt              # Remove comment lines
 # Modify configuration files
 sed 's/nodes=4/nodes=8/' job.sh     # Update node count
 sed -i 's/old/new/g' file.txt       # Edit file in-place
+sed 'pattern/s/100/200/g'           # Replace 100 with 200 where `pattern`
 ```
 
 ---
