@@ -420,7 +420,7 @@ Unlike regular programming variables:
 ### Common Environment Variables
 ```bash
 echo $HOME        # Home directory
-echo $PATH        # Executable search path
+echo $PATH        # Executable (colon-delimited) search path
 echo $USER        # Current username
 echo $PWD         # Current directory
 echo $SHELL       # Current shell
@@ -433,7 +433,7 @@ echo $SHELL       # Current shell
 ### Setting Variables (CSH Default)
 ```bash
 setenv MYVAR "hello world"          # Set environment variable
-setenv PATH ${PATH}:/new/path       # Modify PATH
+setenv PATH ${PATH}:/new/path       # Append /new/path to PATH
 
 # Regular variables (not inherited)
 set localvar = "local only"         # Not exported to children
@@ -486,6 +486,21 @@ export DATA_DIR="/scratch/$USER/data"
 export OUTPUT_DIR="$DATA_DIR/results"
 echo "Processing data in $DATA_DIR"
 ```
+
+---
+
+## Extraneous Environment Variables Notes
+
+- They are often set or modified by commands you use (`conda`, `module`, etc.)
+- They are often used to affect program behavior; typical hierarchy for CLIs:
+    1. Command line arguments
+    2. Environment variables
+    3. **R**un **C**ommands files (`.cshrc`, `.bashrc`, `.condarc`, etc.)
+    4. Program defaults
+- They are best used in scripts when
+    1. You need to set a variable used by a child process
+    2. You need to affect executable or library discovery
+- For other use cases, prefer local shell variables
 
 ---
 
