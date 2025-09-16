@@ -532,7 +532,7 @@ module avail 2>&1 | grep -i gcc  # Search for GCC modules
 ### Managing Loaded Modules
 ```bash
 module list                    # Show currently loaded modules
-module load python/3.9        # Load specific Python version
+module load python/3.10        # Load specific Python version
 module load gcc/11.2.0         # Load GCC compiler
 module unload python           # Unload Python module
 module purge                   # Unload all modules
@@ -544,9 +544,9 @@ module purge                   # Unload all modules
 
 ### Getting Information
 ```bash
-module show python/3.9         # Show module details
-module help python/3.9         # Show module help
-module whatis python/3.9       # Brief description
+module show python/3.10         # Show module details
+module help python/3.10         # Show module help
+module whatis python/3.10       # Brief description
 ```
 
 ### Practical Tips
@@ -567,7 +567,7 @@ module purge                   # Remove all loaded modules
 # Load dependencies first
 module load gcc/11.2.0         # Load compiler first
 module load openmpi/4.1.0      # Load MPI library
-module load python/3.9         # Then load Python
+module load python/3.10         # Then load Python
 
 # Verify what's loaded
 module list                    # Check loaded modules
@@ -1010,8 +1010,8 @@ completed = filter(lambda job: job.status == "COMPLETED", jobs)
 ### Module Loading
 ```bash
 # In SLURM script or interactive session
-module load python/3.9
-module load python/3.9-conda  # Or conda-based Python
+module load python/3.10
+module load python/3.10-conda  # Or conda-based Python
 ```
 
 ### Why Use Environment Management?
@@ -1049,7 +1049,7 @@ deactivate
 ### Creating and Using Conda
 ```bash
 # Load conda module
-module load python/3.9-conda
+module load python/3.10-conda
 
 # Create conda environment
 conda create -n myproject python=3.9
@@ -1226,7 +1226,7 @@ sbatch --nodes=2 --time=04:00:00 myscript.sh
 #SBATCH --mem=16G
 #SBATCH --partition=compute
 
-module load python/3.9
+module load python/3.10
 python my_analysis.py
 ```
 
@@ -1297,7 +1297,7 @@ scontrol show partition  # Partition details
 
 ```bash
 # 1. Prepare environment
-module load python/3.9
+module load python/3.10
 source my_project_env/bin/activate
 
 # 2. Organize data
